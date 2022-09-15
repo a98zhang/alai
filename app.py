@@ -15,10 +15,17 @@ def huhu():
                                                          answer, chat_log)
     msg = MessagingResponse()
     msg.message(answer)
-    '''
     msg = MessagingResponse()
     msg.message(incoming_msg)
     return str(msg)
+    '''
+    resp = MessagingResponse()
+
+    # Add a message
+    resp.message("The Robots are coming! Head for the hills!")
+
+    return str(resp)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
