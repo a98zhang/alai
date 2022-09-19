@@ -5,14 +5,6 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'fjkesjrelhg'
 
-@app.route('/test', methods=['POST'])
-def hey():
-    resp = MessagingResponse()
-    resp.message("The Robots are coming! Head for the hills!")
-    return str(resp)
-
-
-
 @app.route('/bot', methods=['GET','POST'])
 def huhu():
     incoming_msg = request.values['Body']
@@ -26,4 +18,4 @@ def huhu():
     return str(msg)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5002)
