@@ -23,7 +23,6 @@ def huhu():
     
     # retrieve the answer to the incoming message from bot
     answer = ask(incoming_msg, chat_log)
-    print(answer)
     
     # update chat log by appending the current interactions
     session['chat_log'] = update_chat_log(incoming_msg, 
