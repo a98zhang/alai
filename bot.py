@@ -24,7 +24,6 @@ class Bot(object):
         else:
             chat_log_texts = ''.join(chat_log)
         prompt_text = f'{self.session_prompt}{chat_log_texts}{self.restart_sequence} {question}{self.start_sequence}'
-
         response = openai.Completion.create(
             model="text-davinci-002",
             prompt=prompt_text,
@@ -36,18 +35,17 @@ class Bot(object):
             stop=["\n"]
         )
         story = response['choices'][0]['text']
-        
         # report 'no answer' response detail
         if str(story) == '':
-            print('the response is ', response)
+            print('-----EMPTY TEXT ALERT: ', response)
         return str(story)
 
     def change_prompt(self, incoming_msg):
         self.start_sequence = self.presets.loc[incoming_msg]['start_sequence']
         self.restart_sequence = self.presets.loc[incoming_msg]['restart_sequence']
         self.session_prompt = self.presets.loc[incoming_msg]['session_prompt']
+        print(f'-------{self.start_sequence}------' )
         self.prompt_to_be_changed = False
-        print('----PROMPT HAS BEEN CHANGED----')
         return None
 
     def validate_chat_log(self, chat_log, incoming_msg=None):
@@ -67,3 +65,6 @@ class Bot(object):
         msg = MessagingResponse()
         msg.message(answer)
         return str(msg)
+
+    def debug(self, chat_log):
+        print(f'{self.session_prompt}{chat_log} {self.start_sequence}')

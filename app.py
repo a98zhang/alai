@@ -27,6 +27,9 @@ def gpt():
         session['chat_log'] = None
         return bot.answer(f'Hi! You are talking to {incoming_msg} now. Ask me anything.')
 
+    elif incoming_msg == 'DEBUG':
+        bot.debug(session.get('chat_log'))
+    
     # fetch the chat log and fix if necessary
     chat_log = bot.validate_chat_log(session.get('chat_log'), 
                                  incoming_msg)
