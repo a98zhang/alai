@@ -11,7 +11,7 @@ completion = openai.Completion()
 
 class Bot(object):
     def __init__(self, preset='Default'):
-        self.presets = pd.read_csv('data/presets.csv').set_index('preset')
+        self.presets = pd.read_csv('data/presets.csv', encoding = 'unicode_escape').set_index('preset')
         self.start_sequence = self.presets.loc[preset]['start_sequence']
         self.restart_sequence = self.presets.loc[preset]['restart_sequence']
         self.session_prompt = self.presets.loc[preset]['session_prompt']
