@@ -20,12 +20,12 @@ def gpt():
 
     elif incoming_msg == 'CHANGE':          # prompt for changing robot
         bot.prompt_to_be_changed = True
-        return bot.answer('Who do you want to talk to? "Primer", "Jabe", or "Nietzsche"')
+        return bot.answer('Who shall I call for you?')
 
     elif bot.prompt_to_be_changed:          # robot changed
         bot.change_prompt(incoming_msg)
         session['chat_log'] = None
-        return bot.answer(f'Hi! You are talking to {incoming_msg} now. Ask me anything.')
+        return bot.answer(f'“Hi. {incoming_msg} here. What shall we discuss?')
 
     elif incoming_msg == 'DEBUG':
         bot.debug(session.get('chat_log'))

@@ -30,7 +30,7 @@ class Bot(object):
             temperature=0.8,
             max_tokens=self.n_tokens,
             top_p=1,
-            frequency_penalty=0.5, 
+            frequency_penalty=0.4, 
             presence_penalty=0.2,
             stop=["\n"]
         )
