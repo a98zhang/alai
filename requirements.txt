@@ -13,6 +13,8 @@ Flask==2.2.2
 gunicorn==20.1.0
 idna==3.4
 importlib-metadata==4.12.0
+ipykernel==6.15.3
+ipython==8.5.0
 itsdangerous==2.1.2
 jedi==0.18.1
 Jinja2==3.1.2
@@ -21,9 +23,12 @@ jupyter_client==7.3.5
 MarkupSafe==2.1.1
 matplotlib-inline==0.1.6
 nest-asyncio==1.5.5
+numpy==1.23.3
 openai==0.23.0
 openpyxl==3.0.10
 packaging==21.3
+pandas==1.4.4
+pandas-stubs==1.4.4.220912
 parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
