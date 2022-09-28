@@ -11,7 +11,7 @@ completion = openai.Completion()
 
 class Bot(object):
     def __init__(self, preset='Default'):
-        self.presets = pd.read_csv('data/presets.csv', encoding = 'unicode_escape').set_index('preset')
+        self.presets = pd.read_csv('data/presets.csv').set_index('preset')
         self.start_sequence = self.presets.loc[preset]['start_sequence']
         self.restart_sequence = self.presets.loc[preset]['restart_sequence']
         self.session_prompt = self.presets.loc[preset]['session_prompt']
@@ -40,10 +40,13 @@ class Bot(object):
             print('-----EMPTY TEXT ALERT: ', response)
         return str(story)
 
-    def change_prompt(self, incoming_msg):
-        self.start_sequence = self.presets.loc[incoming_msg]['start_sequence']
-        self.restart_sequence = self.presets.loc[incoming_msg]['restart_sequence']
-        self.session_prompt = self.presets.loc[incoming_msg]['session_prompt']
+    def is_valid_change(self, preset_name):
+        return preset_name in self.presets.index
+
+    def change_prompt(self, preset_name):
+        self.start_sequence = self.presets.loc[preset_name]['start_sequence']
+        self.restart_sequence = self.presets.loc[preset_name]['restart_sequence']
+        self.session_prompt = self.presets.loc[preset_name]['session_prompt']
         print(f'-------{self.start_sequence}------' )
         self.prompt_to_be_changed = False
         return None
@@ -52,8 +55,8 @@ class Bot(object):
         if chat_log is None:
             return []
 
-        # 1 token ~= 4 chars in English
-        if len(''.join(chat_log)) >= ((self.n_tokens-300) * 4):
+        # FIFO pop chat history if the prompt exceeds max_tokens
+        while len(''.join(chat_log)) >= ((self.n_tokens-300) * 4):    # 1 token ~= 4 chars in Eng.
             chat_log.pop(0)
         return chat_log
 
