@@ -1,6 +1,5 @@
 from dotenv import load_dotenv
 from twilio.twiml.messaging_response import MessagingResponse
-import numpy as np
 import pandas as pd
 import os
 import openai
