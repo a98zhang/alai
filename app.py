@@ -1,7 +1,6 @@
 from flask import Flask, request, session
 from twilio.twiml.messaging_response import MessagingResponse
 import bot 
-#from bot import ask, change_robot, validate_chat_log, update_chat_log
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'fjkesjrelhg'
@@ -14,18 +13,21 @@ def gpt():
     incoming_msg = request.values['Body']
 
     # special cases
-    if incoming_msg == 'RESTART':           # reset the conversation
+    if incoming_msg == 'RESTART':               # reset the conversation
         session['chat_log'] = None
         return bot.answer('Hi! Ask me anything.')
 
-    elif incoming_msg == 'CHANGE':          # prompt for changing robot
+    elif incoming_msg == 'CHANGE':              # prompt for changing robot
         bot.prompt_to_be_changed = True
         return bot.answer('Who shall I call for you?')
 
-    elif bot.prompt_to_be_changed:          # robot changed
-        bot.change_prompt(incoming_msg)
-        session['chat_log'] = None
-        return bot.answer(f'“Hi. {incoming_msg} here. What shall we discuss?')
+    elif bot.prompt_to_be_changed:          
+        if bot.is_valid_change(incoming_msg):   # change prompt
+            bot.change_prompt(incoming_msg)
+            session['chat_log'] = None
+            return bot.answer(f'Hi. {incoming_msg} here. What shall we discuss?')
+        else:                                   # prompt not in presets
+            return bot.answer(f'{incoming_msg} is not answering. Try another one.')
 
     elif incoming_msg == 'DEBUG':
         bot.debug(session.get('chat_log'))
