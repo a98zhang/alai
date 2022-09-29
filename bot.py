@@ -30,8 +30,8 @@ class Bot(object):
             max_tokens=self.n_tokens,
             top_p=1,
             frequency_penalty=0.4, 
-            presence_penalty=0.2,
-            stop=["\n"]
+            presence_penalty=0.2
+            #stop=["\n"]        where the API will stop generating further tokens
         )
         story = response['choices'][0]['text']
         # report 'no answer' response detail
