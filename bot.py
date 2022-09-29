@@ -39,8 +39,14 @@ class Bot(object):
             print('-----EMPTY TEXT ALERT: ', response)
         return str(story)
 
-    def is_valid_change(self, preset_name):
+    def is_in_presets(self, preset_name):
         return preset_name in self.presets.index
+
+    def list_all_presets(self):
+        presets = ''
+        for i, preset in enumerate(self.presets.index):
+            presets.join(f'{i}: {preset}\n')
+        return presets
 
     def change_prompt(self, preset_name):
         self.start_sequence = self.presets.loc[preset_name]['start_sequence']

@@ -21,8 +21,11 @@ def gpt():
         bot.prompt_to_be_changed = True
         return bot.answer('Who shall I call for you?')
 
+    elif incoming_msg == 'LIST':
+        return bot.answer(bot.list_all_presets())
+
     elif bot.prompt_to_be_changed:          
-        if bot.is_valid_change(incoming_msg):   # change prompt
+        if bot.is_in_presets(incoming_msg):   # change prompt
             bot.change_prompt(incoming_msg)
             session['chat_log'] = None
             return bot.answer(f'Hi. {incoming_msg} here. What shall we discuss?')
