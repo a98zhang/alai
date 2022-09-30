@@ -22,7 +22,9 @@ def gpt():
         return bot.answer('Who shall I call for you?')
 
     elif incoming_msg == 'LIST':
-        return bot.answer(bot.list_all_presets())
+        preset_list = bot.list_all_presets()
+        print(preset_list)
+        return bot.answer(f'Here is the complete list:{preset_list}')
 
     elif bot.prompt_to_be_changed:          
         if bot.is_in_presets(incoming_msg):   # change prompt

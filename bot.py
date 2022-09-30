@@ -45,7 +45,7 @@ class Bot(object):
     def list_all_presets(self):
         presets = ''
         for i, preset in enumerate(self.presets.index):
-            presets.join(f'{i}: {preset}\n')
+            presets += f'\n{i}: {preset}'
         return presets
 
     def change_prompt(self, preset_name):
