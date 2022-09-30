@@ -14,7 +14,7 @@ class Bot(object):
         self.start_sequence = self.presets.loc[preset]['start_sequence']
         self.restart_sequence = self.presets.loc[preset]['restart_sequence']
         self.session_prompt = self.presets.loc[preset]['session_prompt']
-        self.n_tokens = 1000     # shared between prompt and completion
+        self.n_tokens = 1000            # shared between prompt and completion
         self.prompt_to_be_changed = False
 
     def ask(self, question, chat_log=None):
@@ -30,8 +30,8 @@ class Bot(object):
             max_tokens=self.n_tokens,
             top_p=1,
             frequency_penalty=0.4, 
-            presence_penalty=0.2
-            #stop=["\n"]        where the API will stop generating further tokens
+            presence_penalty=0.2,
+            stop=[self.restart_sequence, self.start_sequence]                 
         )
         story = response['choices'][0]['text']
         # report 'no answer' response detail
