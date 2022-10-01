@@ -31,6 +31,7 @@ class Bot(object):
             top_p=1,
             frequency_penalty=0.4, 
             presence_penalty=0.2,
+            # https://help.openai.com/en/articles/5072263-how-do-i-use-stop-sequences
             stop=[self.restart_sequence, self.start_sequence]                 
         )
         story = response['choices'][0]['text']
