@@ -3,7 +3,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 import logging
 import bot 
 
-logging.basicConfig(filename='response.log', encoding='utf-8', level=logging.DEBUG)
+#logging.basicConfig(filename='response.log', encoding='utf-8', level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fjkesjrelhg'
@@ -46,7 +46,7 @@ def gpt():
     
     # retrieve the answer to the incoming message from bot
     answer = bot.ask(incoming_msg, chat_log)
-    logging.debug([answer])
+    #logging.debug([answer])
     
     # update chat log by appending the current interactions
     session['chat_log'] = bot.update_chat_log(incoming_msg, 
