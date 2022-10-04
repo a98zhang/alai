@@ -57,7 +57,7 @@ class Bot(object):
         self.prompt_to_be_changed = False
         return None
 
-    def validate_chat_log(self, chat_log, incoming_msg=None):
+    def validate_chat_log(self, chat_log):
         if chat_log is None:
             return []
 

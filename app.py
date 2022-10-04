@@ -1,9 +1,6 @@
 from flask import Flask, request, session
 from twilio.twiml.messaging_response import MessagingResponse
-import logging
 import bot 
-
-#logging.basicConfig(filename='response.log', encoding='utf-8', level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fjkesjrelhg'
@@ -41,17 +38,17 @@ def gpt():
         bot.debug(session.get('chat_log'))
     
     # fetch the chat log and fix if necessary
-    chat_log = bot.validate_chat_log(session.get('chat_log'), 
-                                 incoming_msg)
+    chat_log = bot.validate_chat_log(session.get('chat_log'))
     
     # retrieve the answer to the incoming message from bot
     answer = bot.ask(incoming_msg, chat_log)
-    #logging.debug([answer])
-    
+
     # update chat log by appending the current interactions
     session['chat_log'] = bot.update_chat_log(incoming_msg, 
                                           answer, chat_log)
     
+    print(answer)
+
     # send back the message 
     return bot.answer(answer)
 
