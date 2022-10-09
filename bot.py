@@ -41,6 +41,8 @@ class Bot(object):
         return str(story)
 
     def is_in_presets(self, preset_name):
+        if preset_name.isdigit():
+            return int(preset_name) in range(len(self.presets.index))
         return preset_name in self.presets.index
 
     def list_all_presets(self):
@@ -50,12 +52,14 @@ class Bot(object):
         return presets
 
     def change_prompt(self, preset_name):
+        if preset_name.isdigit():
+            preset_name = self.presets.index[int(preset_name)]
         self.start_sequence = self.presets.loc[preset_name]['start_sequence']
         self.restart_sequence = self.presets.loc[preset_name]['restart_sequence']
         self.session_prompt = self.presets.loc[preset_name]['session_prompt']
         print(f'-------{self.start_sequence}------' )
         self.prompt_to_be_changed = False
-        return None
+        return preset_name
 
     def validate_chat_log(self, chat_log):
         if chat_log is None:

@@ -28,9 +28,9 @@ def gpt():
 
     elif bot.prompt_to_be_changed:          
         if bot.is_in_presets(incoming_msg):   # change prompt
-            bot.change_prompt(incoming_msg)
+            preset_name = bot.change_prompt(incoming_msg)
             session['chat_log'] = None
-            return bot.answer(f'Hi. {incoming_msg} here. What shall we discuss?')
+            return bot.answer(f'Hi. {preset_name} here. What shall we discuss?')
         else:                                   # prompt not in presets
             return bot.answer(f'{incoming_msg} is not answering. Try another one.')
 
