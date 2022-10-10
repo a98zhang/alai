@@ -1,6 +1,3 @@
 .env
 venv
-test.py
-deb.py
-app copy.py
-bot copy.py
+response.log
