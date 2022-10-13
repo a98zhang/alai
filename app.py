@@ -6,10 +6,6 @@ app.config['SECRET_KEY'] = 'fjkesjrelhg'
 
 bot = bot.Bot()
 
-@app.route("/")
-def index():
-    return render_template("index.html")
-
 @app.route('/bot', methods=['GET','POST'])
 def gpt():
 
@@ -59,7 +55,7 @@ def gpt():
 
 
     # send back the message 
-    return str(answer)
+    return bot.answer(answer)
 
 # TODO: Error handling
 @app.errorhandler(400)
@@ -68,4 +64,4 @@ def not_found():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=7000)
+    app.run(debug=True, port=3000)
