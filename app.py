@@ -1,5 +1,4 @@
-from flask import Flask, request, session
-from twilio.twiml.messaging_response import MessagingResponse
+from flask import Flask, render_template, request, session
 import bot 
 
 app = Flask(__name__)
@@ -7,11 +6,16 @@ app.config['SECRET_KEY'] = 'fjkesjrelhg'
 
 bot = bot.Bot()
 
+@app.route("/")
+def index():
+    return render_template("index.html")
+
 @app.route('/bot', methods=['GET','POST'])
 def gpt():
 
     # fetch the incoming message
-    incoming_msg = request.values['Body']
+    incoming_msg = request.args.get("msg")
+    
 
     # special cases
     if incoming_msg == 'RESTART':               # reset the conversation
@@ -47,10 +51,10 @@ def gpt():
     session['chat_log'] = bot.update_chat_log(incoming_msg, 
                                           answer, chat_log)
     
-    print(answer)
+    
 
     # send back the message 
-    return bot.answer(answer)
+    return str(answer)
 
 # TODO: Error handling
 @app.errorhandler(400)
@@ -59,4 +63,4 @@ def not_found():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=3000)
+    app.run(debug=True, port=7000)
