@@ -17,7 +17,7 @@ def gpt():
         session['preset'] = 'Default'
 
     curr_bot = session['preset']
-    incoming_msg = request.values['Body']
+    incoming_msg = request.args.get("msg")
     chat_log = bot.validate_chat_log(session.get('chat_log'))
 
     # special cases

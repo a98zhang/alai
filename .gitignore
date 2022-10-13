@@ -2,3 +2,4 @@
 venv
 response.log
 __pycache__
+.vscode
