@@ -22,6 +22,9 @@ class Bot(object):
             f'{prms["session_prompt"]}{chat_log_texts}'
             f'{prms["restart_sequence"]} {question}{prms["start_sequence"]}'
         )
+        stop_sequence = [prms['restart_sequence'], prms['start_sequence']]
+        if not pd.isna(prms['stop']):
+            stop_sequence.append(prms['stop'])
 
         # Creates a completion for the provided prompt and parameters
         response = openai.Completion.create(
@@ -33,7 +36,7 @@ class Bot(object):
             frequency_penalty=0.4, 
             presence_penalty=0.2,
             # https://help.openai.com/en/articles/5072263-how-do-i-use-stop-sequences
-            stop=[prms['restart_sequence'], prms['start_sequence']]                 
+            stop=stop_sequence        
         )
 
         story = response['choices'][0]['text']
