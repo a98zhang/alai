@@ -3,6 +3,7 @@ from twilio.twiml.messaging_response import MessagingResponse
 import pandas as pd
 import os
 import openai
+import nltk
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -11,17 +12,13 @@ completion = openai.Completion()
 class Bot(object):
     def __init__(self, preset='Default'):
         self.presets = pd.read_csv('data/presets.csv').set_index('preset')
-        self.n_tokens = 1000            # shared between prompt and completion
+        self.n_tokens = 1000            
 
     def ask(self, question, preset, chat_log=None):
 
         # prepare the prompt and parameters
         prms = self.get_presets(preset)
-        chat_log_texts = '' if chat_log is None else ''.join(chat_log)
-        prompt_text = (
-            f'{prms["session_prompt"]}{chat_log_texts}'
-            f'{prms["restart_sequence"]} {question}{prms["start_sequence"]}'
-        )
+        prompt_text = self.validate_prompt_length(prms, question, chat_log)
         stop_sequence = [prms['restart_sequence'], prms['start_sequence']]
         if not pd.isna(prms['stop']):
             stop_sequence.append(prms['stop'])
@@ -71,6 +68,25 @@ class Bot(object):
             preset = self.presets.index[int(preset)]
         return preset
 
+    def validate_prompt_length(self, prms, question, chat_log):
+        prompt_text = self.compile_prompt_text(prms, question, chat_log)
+        a = len(nltk.word_tokenize(prompt_text))
+        print("==", a)
+        # up to 4097 tokens shared between prompt and completion
+        while len(nltk.word_tokenize(prompt_text)) >= (4097*0.85 - self.n_tokens):
+            print("popping...")
+            chat_log.pop(0)
+            prompt_text = self.compile_prompt_text(prms, question, chat_log)                    
+        return prompt_text
+       
+    def compile_prompt_text(self, prms, question, chat_log):
+        chat_log_texts = '' if chat_log is None else ''.join(chat_log)
+        prompt_text = (
+            f'{prms["session_prompt"]}{chat_log_texts}'
+            f'{prms["restart_sequence"]} {question}{prms["start_sequence"]}'
+        )
+        return prompt_text
+
     def validate_chat_log(self, chat_log):
         if chat_log is None:
             return []
@@ -79,6 +95,7 @@ class Bot(object):
         while len(''.join(chat_log)) >= ((self.n_tokens-300) * 4):    
             chat_log.pop(0)                     # 1 token ~= 4 chars in Eng.
         return chat_log
+        # condensing your prompt, or breaking the text into smaller pieces 
 
     def update_chat_log(self, question, answer, preset, chat_log=None):
 

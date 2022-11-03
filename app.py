@@ -14,7 +14,7 @@ def gpt():
 
     curr_bot = session['preset']
     incoming_msg = request.values['Body']
-    chat_log = bot.validate_chat_log(session.get('chat_log'))
+    chat_log = session.get('chat_log')
 
     # special cases
     if incoming_msg == 'RESTART':               # reset the conversation
