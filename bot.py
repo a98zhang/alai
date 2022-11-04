@@ -4,6 +4,7 @@ import pandas as pd
 import os
 import openai
 import nltk
+nltk.download('punkt')
 
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -98,7 +99,8 @@ class Bot(object):
         # condensing your prompt, or breaking the text into smaller pieces 
 
     def update_chat_log(self, question, answer, preset, chat_log=None):
-
+        if chat_log is None:
+            chat_log = []
         prms = self.get_presets(preset)
         chat_log.append((
             f'{prms["restart_sequence"]} {question}'
