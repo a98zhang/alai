@@ -72,10 +72,8 @@ class Bot(object):
     def validate_prompt_length(self, prms, question, chat_log):
         prompt_text = self.compile_prompt_text(prms, question, chat_log)
         a = len(nltk.word_tokenize(prompt_text))
-        print("==", a)
         # up to 4097 tokens shared between prompt and completion
         while len(nltk.word_tokenize(prompt_text)) >= (4097*0.85 - self.n_tokens):
-            print("popping...")
             chat_log.pop(0)
             prompt_text = self.compile_prompt_text(prms, question, chat_log)                    
         return prompt_text
@@ -87,16 +85,6 @@ class Bot(object):
             f'{prms["restart_sequence"]} {question}{prms["start_sequence"]}'
         )
         return prompt_text
-
-    def validate_chat_log(self, chat_log):
-        if chat_log is None:
-            return []
-
-        # FIFO pop chat history if the prompt exceeds max_tokens
-        while len(''.join(chat_log)) >= ((self.n_tokens-300) * 4):    
-            chat_log.pop(0)                     # 1 token ~= 4 chars in Eng.
-        return chat_log
-        # condensing your prompt, or breaking the text into smaller pieces 
 
     def update_chat_log(self, question, answer, preset, chat_log=None):
         if chat_log is None:
