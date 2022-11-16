@@ -76,6 +76,8 @@ class Bot(object):
         # up to 4097 tokens shared between prompt and completion
         while len(nltk.word_tokenize(prompt_text)) >= (4097*0.85 - self.n_tokens):
             print("popping...")
+            if chat_log is None or len(chat_log) == 0:
+                break
             chat_log.pop(0)
             prompt_text = self.compile_prompt_text(prms, question, chat_log)                    
         return prompt_text
