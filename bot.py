@@ -28,11 +28,11 @@ class Bot(object):
         response = openai.Completion.create(
             model="text-davinci-003",
             prompt=prompt_text,
-            temperature=0.8,
+            temperature=0.7,
             max_tokens=self.n_tokens,
             top_p=1,
-            frequency_penalty=0.4, 
-            presence_penalty=0.2,
+            frequency_penalty=0, 
+            presence_penalty=0,
             # https://help.openai.com/en/articles/5072263-how-do-i-use-stop-sequences
             stop=stop_sequence        
         )
